@@ -135,6 +135,7 @@ const fetchingFromTheMealDBApi = (passedUrlForFetching , passedInfoForTakingDeci
             errorMessage = "Your Food Can't Be Found In The Database Of TheMealDB!\n\nSorry!";
         }
         showMessage(errorMessage);
+        document.getElementById('foodThatWillShowUpId').style.display='none';
         console.log(errorWhileProcessing.console);
     })
 }
