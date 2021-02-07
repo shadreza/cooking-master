@@ -19,7 +19,7 @@ const displayFoods = foodsFromJSON => {
 
 const searchForFood = foodsFromJSON => {
     const foodInfoFromTheAPI = foodsFromJSON;
-    console.log(foodInfoFromTheAPI);
+    // console.log(foodInfoFromTheAPI);
 }
 
 
@@ -31,18 +31,36 @@ function fetchFromAPI(passedURL,passedInfo){
             displayFoods(data);
         }
         else if(passedInfo===2){
-            console.log(data);
             for(let i=1;;i++){
-                // const property = 'strIngredient'+i;
-                const infooo = data.meals[0].strIngredient;
-                console.log(infooo);
-                if(infooo===''||infooo===undefined){
+                const ingredientsProperty = `strIngredient${i}`;
+                const measuresProperty = `strMeasure${i}`;
+                // console.log(data);
+                const ingredient = data.meals[0][ingredientsProperty];
+                const measures = data.meals[0][measuresProperty];
+                if(ingredient=='' || ingredient==undefined || ingredient==null){
                     break;
-                }else{
-                    console.log(infooo);
                 }
-                
+                console.log(measures + " " + ingredient);
             }
+            // for(let i=1;i<5;i++){
+            //     // const property = `strIngredient${i}`;
+            //     // console.log(property);
+            //     // const infooo = data.meals[0].strIngredient1;
+            //     // console.log(infooo);
+                
+            // }
+            
+            // for(let i=1;;i++){
+            //     const property = 'strIngredient'+i;
+            //     const infooo = data.meals[0].strIngredient1;
+            //     console.log(infooo);
+            //     if(infooo===''||infooo===undefined){
+            //         break;
+            //     }else{
+            //         console.log(infooo);
+            //     }
+                
+            // }
             
         }
     })
@@ -64,6 +82,11 @@ function searchMealInfo(){
     }
 }
 
+document.getElementById('inputFromUser').addEventListener('keydown',function(event){
+    if(event.keyCode===13){
+        searchMealInfo();
+    }
+})
 
 
 document.getElementById('searchButton').addEventListener('click',function(){
