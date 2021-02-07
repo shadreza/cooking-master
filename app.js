@@ -109,7 +109,13 @@ const fetchingFromTheMealDBApi = (passedUrlForFetching , passedInfoForTakingDeci
         }
     })
     .catch(errorWhileProcessing => {
-        const errorMessage = "Wrong URL provided!";
+        let errorMessage='';
+        if(passedInfoForTakingDecision==1){
+            errorMessage = "Wrong URL provided!";
+        }
+        else{
+            errorMessage = "Your Food Can't Be Found In The Database Of TheMealDB!\n\nSorry!";
+        }
         showMessage(errorMessage);
         console.log(errorWhileProcessing.console);
     })
