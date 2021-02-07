@@ -25,6 +25,7 @@ const displayFoodsInTheGallery = fletchedJsonDataOfFoods => {
 }
 
 const showTheDetailsOfTheFood = fletchedDataOfFood => {
+    const selectedFoodShowCasingDiv = document.getElementById('foodThatWillShowUpId');
     const foodImageUrl = fletchedDataOfFood.strMealThumb;
     const nameOfTheFood = fletchedDataOfFood.strMeal;
     const ulForTheFoodIngredients = document.createElement('ul');
@@ -39,6 +40,13 @@ const showTheDetailsOfTheFood = fletchedDataOfFood => {
     buttonForPlayingVideoRecipe.className='btn btn-success';
     buttonForPlayingVideoRecipe.innerText="wanna make along? click me!";
     anchorWrappingTheButton.appendChild(buttonForPlayingVideoRecipe);
+    const closeTheDiv = document.createElement('button');
+    closeTheDiv.innerText='close';
+    closeTheDiv.className='btn btn-danger';
+    closeTheDiv.addEventListener('click',function(){
+        selectedFoodShowCasingDiv.innerHTML='';
+        selectedFoodShowCasingDiv.style.display='none';
+    })
     let i=1;
     while(1){
         const ingredientsProperty = `strIngredient${i}`;
@@ -56,18 +64,21 @@ const showTheDetailsOfTheFood = fletchedDataOfFood => {
         i++;
     }
     if(i==1){
-        
+        showMessage('No Ingredients Found!');
+        return;
     }
     else{
         const beforeIngredientsText = document.createElement('h5');
         beforeIngredientsText.innerText = 'The Ingredients Along with their Measurements ->>>\n';
-        const selectedFoodShowCasingDiv = document.getElementById('foodThatWillShowUpId');
         selectedFoodShowCasingDiv.innerHTML=''; 
         selectedFoodShowCasingDiv.appendChild(headingNameOfTheFood);
         selectedFoodShowCasingDiv.appendChild(imgOfTheFood);
         selectedFoodShowCasingDiv.appendChild(beforeIngredientsText);
         selectedFoodShowCasingDiv.appendChild(ulForTheFoodIngredients);
         selectedFoodShowCasingDiv.appendChild(anchorWrappingTheButton);
+        const breakingLine = document.createElement('br');
+        selectedFoodShowCasingDiv.appendChild(breakingLine);
+        selectedFoodShowCasingDiv.appendChild(closeTheDiv);
         selectedFoodShowCasingDiv.style.display= 'block';
     }
 }
@@ -78,6 +89,9 @@ const requestForInternalDetails = urlOfTheSpecificFood => {
 
 document.getElementById('foodGallery').addEventListener('click',event =>{
     const idOfTheClickedFood = event.target.id;
+    if(idOfTheClickedFood == 'foodGallery'){
+        return;
+    }
     const sendingAPIUrl = `https://www.themealdb.com/api/json/v1/1/search.php?s=${idOfTheClickedFood}`;
     requestForInternalDetails(sendingAPIUrl);
 })
@@ -118,12 +132,18 @@ const searchMealInfo = () => {
     }
 }
 
+const clearTheSearchBox = () => {
+    document.getElementById('inputFromUser').value='';
+}
+
 document.getElementById('searchButton').addEventListener('click',function(){
     searchMealInfo();
+    clearTheSearchBox();
 })
 
 document.getElementById('inputFromUser').addEventListener('keydown',function(event){
     if(event.keyCode===13){
         searchMealInfo();
+        clearTheSearchBox();
     }
 })
