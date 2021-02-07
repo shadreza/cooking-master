@@ -12,10 +12,10 @@
 <body>
 
     <nav class="navbar">
-        <div class="leftPart">
+        <div class="leftPartOfNavbar">
             <a href="#"><strong>Cooking master</strong></a>
         </div>
-        <div class="rightPart">
+        <div class="rightPartOfNavBar">
             <a href="#"><small>Home</small></a>
             <a href="#"><small>About</small></a>
             <a href="#"><small>Recipes</small></a>
@@ -30,11 +30,20 @@
             <button class="btn btn-success inSearchBox" id="searchButton"><i class="fa fa-search"></i> Search</button>
         </div>
 
-        <div class="container-fluid gridContainer" id="galery">
+        <div class="foodThatWillShowUp" id="foodThatWillShowUpId">
 
         </div>
 
+        <div class="container-fluid gridContainer" id="foodGallery">
+
+        </div>
+
+        <section id="popupBox">
+            <p id="popupBoxMessage">Hello!</p>
+            <button id="closePopupBox">Close</button>
+        </section>
+
     </main>
-    <script src="functionality.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
