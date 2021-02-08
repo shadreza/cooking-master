@@ -17,7 +17,8 @@ const makeInnerHtmlNone = passedId => {
 // this will display the foods in a grid of 4 and this will be done at the first stage of the webpage loading
 // also the image and the name will be shown 
 const displayFoodsInTheGallery = fletchedJsonDataOfFoods => {
-    document.getElementById('foodGallery').innerHTML='';
+    const foodGalleryId = document.getElementById('foodGallery');
+    makeInnerHtmlNone(foodGalleryId);
     foodArrayFromJsonMeals = fletchedJsonDataOfFoods.meals;
     foodArrayFromJsonMeals.forEach(individualFoodContent => {
         const urlOfTheFoodImage = `${individualFoodContent.strMealThumb}`;
@@ -112,16 +113,16 @@ const requestForInternalDetails = urlOfTheSpecificFood => {
     fetchingFromTheMealDBApi(urlOfTheSpecificFood , 2);
 }
 
-// if any of the searched food items that are suggested are clicked then if the click is on the food part then that will trigger the indepth information about the food 
-document.getElementById('elementFromTheSearchResultDiv').addEventListener('click',event =>{
-    const idOfTheClickedFood = event.target.id;
-    console.log(idOfTheClickedFood);
-    if(idOfTheClickedFood == 'elementFromTheSearchResultDiv'){
-        return;
-    }
-    const sendingAPIUrl = `https://www.themealdb.com/api/json/v1/1/search.php?s=${idOfTheClickedFood}`;
-    requestForInternalDetails(sendingAPIUrl);
-})
+// // if any of the searched food items that are suggested are clicked then if the click is on the food part then that will trigger the indepth information about the food 
+// document.getElementById('elementFromTheSearchResultDiv').addEventListener('click',event =>{
+//     const idOfTheClickedFood = event.target.id;
+//     console.log(idOfTheClickedFood);
+//     if(idOfTheClickedFood == 'elementFromTheSearchResultDiv'){
+//         return;
+//     }
+//     const sendingAPIUrl = `https://www.themealdb.com/api/json/v1/1/search.php?s=${idOfTheClickedFood}`;
+//     requestForInternalDetails(sendingAPIUrl);
+// })
 
 // if any part of the foodGallery is pressed then it will trigger the event and if the picture or the name or the internal part of the food is clicked this will show the details of the food but if the outside part or a non food part is clicked then this will not go for the details section
 document.getElementById('foodGallery').addEventListener('click',event =>{
@@ -230,6 +231,7 @@ document.getElementById('searchButton').addEventListener('click',() =>{
 // if enter keyCode 13 is pressed and the focus is at the time of staying in the input frame this will also trigger the searching for the meal information
 // else if the input text matches with any food name that the api returns then we will show them also and if no then that display div will be set to no innerHtml
 document.getElementById('inputFromUser').addEventListener( 'keyup' , event =>{
+    // for the enter trigger
     if(event.keyCode===13){
         searchMealInfo();
         clearTheSearchBox();
@@ -237,11 +239,15 @@ document.getElementById('inputFromUser').addEventListener( 'keyup' , event =>{
     else{
         const nameOfTheEnteredMealNode = document.getElementById('inputFromUser');
         let nameOfTheEnteredMeal = nameOfTheEnteredMealNode.value;
+        // if the input value is not a string
         if(nameOfTheEnteredMeal=='' || nameOfTheEnteredMeal==' ' || nameOfTheEnteredMeal==undefined || nameOfTheEnteredMeal==null){
             clearTheSearchBox();
             const divOfTheSearchings = document.getElementById('elementFromTheSearchResultDiv');
             makeInnerHtmlNone(divOfTheSearchings);
+            const foodGalleryId = document.getElementById('foodGallery');
+            makeInnerHtmlNone(foodGalleryId);
         }
+        // the input is a string
         else{
             const sendingAPIUrl = `https://www.themealdb.com/api/json/v1/1/search.php?s=${nameOfTheEnteredMeal}`;
             fetchingFromTheMealDBApi(sendingAPIUrl,1,nameOfTheEnteredMeal);
