@@ -209,4 +209,7 @@ document.getElementById('inputFromUser').addEventListener( 'keyup' , event =>{
             fetchingFromTheMealDBApi(sendingAPIUrl,1,nameOfTheEnteredMeal);
         }
     }
+    const foodInfoDiv = document.getElementById('foodThatWillShowUpId');
+    makeInnerHtmlNone(foodInfoDiv);
+    foodInfoDiv.style.display='none';
 })
