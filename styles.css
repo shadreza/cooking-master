@@ -130,23 +130,3 @@ a:hover{
 .btn-danger{
     margin: 1rem;
 }
-
-.searchingElements{
-    display: grid;
-    grid-gap: 1rem;
-    grid-template-columns: 11.2% 11.2% 11.2% 11.2% 11.2% 11.2% 11.2% 11.2% ;
-}
-
-.searchingElements div{
-    cursor: pointer;
-}
-
-.imageOfTheSearches{
-    width: 80%;
-    border-radius: 100%;
-}
-
-.individualFoodInfo{
-    text-align: center;
-    padding: 1rem;
-}
