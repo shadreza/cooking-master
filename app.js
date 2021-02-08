@@ -17,6 +17,7 @@ const makeInnerHtmlNone = passedId => {
 // this will display the foods in a grid of 4 and this will be done at the first stage of the webpage loading
 // also the image and the name will be shown 
 const displayFoodsInTheGallery = fletchedJsonDataOfFoods => {
+    document.getElementById('foodGallery').innerHTML='';
     foodArrayFromJsonMeals = fletchedJsonDataOfFoods.meals;
     foodArrayFromJsonMeals.forEach(individualFoodContent => {
         const urlOfTheFoodImage = `${individualFoodContent.strMealThumb}`;
@@ -192,11 +193,11 @@ const fetchingFromTheMealDBApi = (passedUrlForFetching , passedInfoForTakingDeci
 // this is like the constructor portion of the code 
 // this will display the foods in the initial stages
 // displaying foods that starts with a, c, d, e and f
-fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=a',1);
-fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=c',1);
-fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=d',1);
-fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=e',1);
-fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=f',1);
+// fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=a',1);
+// fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=c',1);
+// fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=d',1);
+// fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=e',1);
+// fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=f',1);
 
 // this function looks inside the search box input section and if it sees a valid string then it sends that name or text for showing the details about that food or object and if not found then shown message
 const searchMealInfo = () => {
@@ -206,7 +207,7 @@ const searchMealInfo = () => {
     }
     else{
         const sendingAPIUrl = `https://www.themealdb.com/api/json/v1/1/search.php?s=${nameOfTheEnteredMeal}`;
-        fetchingFromTheMealDBApi(sendingAPIUrl,2,nameOfTheEnteredMeal);
+        fetchingFromTheMealDBApi(sendingAPIUrl,1,nameOfTheEnteredMeal);
     }
 }
 
@@ -239,7 +240,7 @@ document.getElementById('inputFromUser').addEventListener( 'keyup' , event =>{
         }
         else{
             const sendingAPIUrl = `https://www.themealdb.com/api/json/v1/1/search.php?s=${nameOfTheEnteredMeal}`;
-            fetchingFromTheMealDBApi(sendingAPIUrl,3,nameOfTheEnteredMeal);
+            fetchingFromTheMealDBApi(sendingAPIUrl,1,nameOfTheEnteredMeal);
         }
     }
 })
