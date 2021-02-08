@@ -101,7 +101,6 @@ const showTheDetailsOfTheFood = fletchedDataOfFood => {
         const breakingLine = document.createElement('br');
         selectedFoodShowCasingDiv.appendChild(breakingLine);
         selectedFoodShowCasingDiv.appendChild(closeTheDiv);
-        makeInnerHtmlNone(document.getElementById('elementFromTheSearchResultDiv'));
         clearTheSearchBox();
         selectedFoodShowCasingDiv.style.display= 'block';
         window.scrollTo(0,200);
@@ -113,17 +112,6 @@ const requestForInternalDetails = urlOfTheSpecificFood => {
     fetchingFromTheMealDBApi(urlOfTheSpecificFood , 2);
 }
 
-// // if any of the searched food items that are suggested are clicked then if the click is on the food part then that will trigger the indepth information about the food 
-// document.getElementById('elementFromTheSearchResultDiv').addEventListener('click',event =>{
-//     const idOfTheClickedFood = event.target.id;
-//     console.log(idOfTheClickedFood);
-//     if(idOfTheClickedFood == 'elementFromTheSearchResultDiv'){
-//         return;
-//     }
-//     const sendingAPIUrl = `https://www.themealdb.com/api/json/v1/1/search.php?s=${idOfTheClickedFood}`;
-//     requestForInternalDetails(sendingAPIUrl);
-// })
-
 // if any part of the foodGallery is pressed then it will trigger the event and if the picture or the name or the internal part of the food is clicked this will show the details of the food but if the outside part or a non food part is clicked then this will not go for the details section
 document.getElementById('foodGallery').addEventListener('click',event =>{
     const idOfTheClickedFood = event.target.id;
@@ -133,26 +121,6 @@ document.getElementById('foodGallery').addEventListener('click',event =>{
     const sendingAPIUrl = `https://www.themealdb.com/api/json/v1/1/search.php?s=${idOfTheClickedFood}`;
     requestForInternalDetails(sendingAPIUrl);
 })
-
-// By typing in the search-box the typed text will be shown as the search results just bellow the search box
-// this is also an added functionality for the food suggestion
-const displaySearchResults = (fletchedDataInJson) => {
-    const searchResultDiv = document.getElementById('elementFromTheSearchResultDiv');
-    makeInnerHtmlNone(searchResultDiv);
-    const fletchedDataOfMeals = fletchedDataInJson.meals;
-    fletchedDataOfMeals.forEach(indivialMealContent => {
-        const divForIndividualFoodFromSearchResult = document.createElement('div');
-        const nameOfTheFood = indivialMealContent.strMeal;
-        divForIndividualFoodFromSearchResult.className='individualFoodInfo';
-        divForIndividualFoodFromSearchResult.id=nameOfTheFood;
-        divForIndividualFoodFromSearchResult.innerHTML = `
-            <img id=${nameOfTheFood} class='imageOfTheSearches' src =${indivialMealContent.strMealThumb}>
-            <small id=${nameOfTheFood}>${nameOfTheFood}<small>
-        `
-        searchResultDiv.appendChild(divForIndividualFoodFromSearchResult);
-    });
-    searchResultDiv.style.display='grid';
-}
 
 // the fletching part is done in this functions
 // if the second arguement or passedInfoForTakingDecision is 1 that means loading the foods for the initial display
@@ -168,9 +136,6 @@ const fetchingFromTheMealDBApi = (passedUrlForFetching , passedInfoForTakingDeci
             const fletchedFoodObjectFromJson = fletchedDataInJson.meals[0];
             showTheDetailsOfTheFood(fletchedFoodObjectFromJson);
         }
-        // else if(passedInfoForTakingDecision==3){
-        //     displaySearchResults(fletchedDataInJson);
-        // }
     })
     // if there is any problem then the following catch codes will be executed as per condition
     .catch(errorWhileProcessing => {
@@ -192,17 +157,10 @@ const fetchingFromTheMealDBApi = (passedUrlForFetching , passedInfoForTakingDeci
         document.getElementById('foodThatWillShowUpId').style.display='none';
         errorWhileProcessing.console;
         clearTheSearchBox();
+        const foodGalleryId = document.getElementById('foodGallery');
+        makeInnerHtmlNone(foodGalleryId);
     })
 }
-
-// this is like the constructor portion of the code 
-// this will display the foods in the initial stages
-// displaying foods that starts with a, c, d, e and f
-// fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=a',1);
-// fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=c',1);
-// fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=d',1);
-// fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=e',1);
-// fetchingFromTheMealDBApi('https://www.themealdb.com/api/json/v1/1/search.php?f=f',1);
 
 // this function looks inside the search box input section and if it sees a valid string then it sends that name or text for showing the details about that food or object and if not found then shown message
 const searchMealInfo = () => {
@@ -242,8 +200,6 @@ document.getElementById('inputFromUser').addEventListener( 'keyup' , event =>{
         // if the input value is not a string
         if(nameOfTheEnteredMeal=='' || nameOfTheEnteredMeal==' ' || nameOfTheEnteredMeal==undefined || nameOfTheEnteredMeal==null){
             clearTheSearchBox();
-            const divOfTheSearchings = document.getElementById('elementFromTheSearchResultDiv');
-            makeInnerHtmlNone(divOfTheSearchings);
             const foodGalleryId = document.getElementById('foodGallery');
             makeInnerHtmlNone(foodGalleryId);
         }
