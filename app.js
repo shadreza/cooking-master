@@ -60,6 +60,9 @@ const showTheDetailsOfTheFood = fletchedDataOfFood => {
     closeTheDiv.addEventListener('click',function(){
         makeInnerHtmlNone(selectedFoodShowCasingDiv);
         selectedFoodShowCasingDiv.style.display='none';
+        const foodGalleryId = document.getElementById('foodGallery');
+        makeInnerHtmlNone(foodGalleryId);
+        clearTheSearchBox();
     })
 
     // as the ingredients are in strIngredient1 , strIngredient2 , strIngredient(n) format so i had to use the for loop to bring the properties out like that
@@ -106,7 +109,7 @@ const showTheDetailsOfTheFood = fletchedDataOfFood => {
 
 // this is a function that call for the special div or the details section of a given items or food
 const requestForInternalDetails = urlOfTheSpecificFood => {
-    fetchingFromTheMealDBApi(urlOfTheSpecificFood , 2,);
+    fetchingFromTheMealDBApi(urlOfTheSpecificFood , 2);
 }
 
 // if any of the searched food items that are suggested are clicked then if the click is on the food part then that will trigger the indepth information about the food 
@@ -164,9 +167,9 @@ const fetchingFromTheMealDBApi = (passedUrlForFetching , passedInfoForTakingDeci
             const fletchedFoodObjectFromJson = fletchedDataInJson.meals[0];
             showTheDetailsOfTheFood(fletchedFoodObjectFromJson);
         }
-        else if(passedInfoForTakingDecision==3){
-            displaySearchResults(fletchedDataInJson);
-        }
+        // else if(passedInfoForTakingDecision==3){
+        //     displaySearchResults(fletchedDataInJson);
+        // }
     })
     // if there is any problem then the following catch codes will be executed as per condition
     .catch(errorWhileProcessing => {
@@ -176,7 +179,7 @@ const fetchingFromTheMealDBApi = (passedUrlForFetching , passedInfoForTakingDeci
             errorMessage = "Please Check Your Internet Connection";
         }
         else if(passedInfoForTakingDecision==1){
-            errorMessage = "Wrong URL provided!";
+            errorMessage =  nameOfTheFood+" Can't Be Found In The Database Of TheMealDB!\n\nSorry!";
         }
         else if(passedInfoForTakingDecision==2){
             errorMessage =  nameOfTheFood+" Can't Be Found In The Database Of TheMealDB!\n\nSorry!";
@@ -187,6 +190,7 @@ const fetchingFromTheMealDBApi = (passedUrlForFetching , passedInfoForTakingDeci
         showMessage(errorMessage);
         document.getElementById('foodThatWillShowUpId').style.display='none';
         errorWhileProcessing.console;
+        clearTheSearchBox();
     })
 }
 
