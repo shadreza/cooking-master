@@ -9,6 +9,11 @@ document.getElementById('closePopupBox').addEventListener('click',function(){
     document.getElementById('popupBox').style.display='none';
 })
 
+// this function will make the passedId's passed in the arguement innerHTML to none
+const makeInnerHtmlNone = passedId => {
+    passedId.innerHTML='';
+}
+
 // this will display the foods in a grid of 4 and this will be done at the first stage of the webpage loading
 // also the image and the name will be shown 
 const displayFoodsInTheGallery = fletchedJsonDataOfFoods => {
@@ -20,9 +25,9 @@ const displayFoodsInTheGallery = fletchedJsonDataOfFoods => {
         individualFoodDiv.className='foodBoxesInternals';
         individualFoodDiv.id=`${nameOfTheFood}`;
         const foodInfo = `
-        <img id='${nameOfTheFood}' src='${urlOfTheFoodImage}'>
-        <p id='${nameOfTheFood}'>${nameOfTheFood}<p>
-        `
+            <img id='${nameOfTheFood}' src='${urlOfTheFoodImage}'>
+            <p id='${nameOfTheFood}'>${nameOfTheFood}<p>
+            `
         individualFoodDiv.innerHTML=foodInfo;
         document.getElementById('foodGallery').appendChild(individualFoodDiv);
     });
@@ -52,7 +57,7 @@ const showTheDetailsOfTheFood = fletchedDataOfFood => {
     closeTheDiv.innerText='close';
     closeTheDiv.className='btn btn-danger';
     closeTheDiv.addEventListener('click',function(){
-        selectedFoodShowCasingDiv.innerHTML='';
+        makeInnerHtmlNone(selectedFoodShowCasingDiv);
         selectedFoodShowCasingDiv.style.display='none';
     })
 
@@ -82,7 +87,7 @@ const showTheDetailsOfTheFood = fletchedDataOfFood => {
         // appending the html tags in the detail div portion 
         const beforeIngredientsText = document.createElement('h5');
         beforeIngredientsText.innerText = 'The Ingredients Along with their Measurements ->>>\n';
-        selectedFoodShowCasingDiv.innerHTML='';
+        makeInnerHtmlNone(selectedFoodShowCasingDiv);
         selectedFoodShowCasingDiv.appendChild(headingNameOfTheFood);
         selectedFoodShowCasingDiv.appendChild(imgOfTheFood);
         selectedFoodShowCasingDiv.appendChild(beforeIngredientsText);
@@ -91,9 +96,10 @@ const showTheDetailsOfTheFood = fletchedDataOfFood => {
         const breakingLine = document.createElement('br');
         selectedFoodShowCasingDiv.appendChild(breakingLine);
         selectedFoodShowCasingDiv.appendChild(closeTheDiv);
-        document.getElementById('elementFromTheSearchResultDiv').innerHTML='';
+        makeInnerHtmlNone(document.getElementById('elementFromTheSearchResultDiv'));
         clearTheSearchBox();
         selectedFoodShowCasingDiv.style.display= 'block';
+        window.scrollTo(0,200);
     }
 }
 
@@ -102,8 +108,7 @@ const requestForInternalDetails = urlOfTheSpecificFood => {
     fetchingFromTheMealDBApi(urlOfTheSpecificFood , 2,);
 }
 
-// if any part of the foodGallery is pressed then it will trigger the event and if the picture or the name or the internal part of the food is clicked this will show the details of the food but if the outside part or a non food part is clicked then this will not go for the details section
-
+// if any of the searched food items are clicked then if the click is on the food part then that will trigger the indepth information about the food 
 document.getElementById('elementFromTheSearchResultDiv').addEventListener('click',event =>{
     const idOfTheClickedFood = event.target.id;
     console.log(idOfTheClickedFood);
@@ -114,6 +119,7 @@ document.getElementById('elementFromTheSearchResultDiv').addEventListener('click
     requestForInternalDetails(sendingAPIUrl);
 })
 
+// if any part of the foodGallery is pressed then it will trigger the event and if the picture or the name or the internal part of the food is clicked this will show the details of the food but if the outside part or a non food part is clicked then this will not go for the details section
 document.getElementById('foodGallery').addEventListener('click',event =>{
     const idOfTheClickedFood = event.target.id;
     if(idOfTheClickedFood == 'foodGallery'){
@@ -123,9 +129,10 @@ document.getElementById('foodGallery').addEventListener('click',event =>{
     requestForInternalDetails(sendingAPIUrl);
 })
 
+// By typing in the search-box the typed text will be shown as the search results just bellow the search box
 const displaySearchResults = (fletchedDataInJson) => {
     const searchResultDiv = document.getElementById('elementFromTheSearchResultDiv');
-    searchResultDiv.innerHTML='';
+    makeInnerHtmlNone(searchResultDiv);
     const fletchedDataOfMeals = fletchedDataInJson.meals;
     fletchedDataOfMeals.forEach(indivialMealContent => {
         const divForIndividualFoodFromSearchResult = document.createElement('div');
@@ -133,8 +140,8 @@ const displaySearchResults = (fletchedDataInJson) => {
         divForIndividualFoodFromSearchResult.className='individualFoodInfo';
         divForIndividualFoodFromSearchResult.id=nameOfTheFood;
         divForIndividualFoodFromSearchResult.innerHTML = `
-            <small id=${nameOfTheFood}>${nameOfTheFood}<small>
             <img id=${nameOfTheFood} class='imageOfTheSearches' src =${indivialMealContent.strMealThumb}>
+            <small id=${nameOfTheFood}>${nameOfTheFood}<small>
         `
         searchResultDiv.appendChild(divForIndividualFoodFromSearchResult);
     });
@@ -159,10 +166,14 @@ const fetchingFromTheMealDBApi = (passedUrlForFetching , passedInfoForTakingDeci
             displaySearchResults(fletchedDataInJson);
         }
     })
+    // if there is any problem then the following catch codes will be executed as per condition
     .catch(errorWhileProcessing => {
-        console.log(errorWhileProcessing);
+        const onlineOrOffline = window.navigator.onLine;
         let errorMessage='';
-        if(passedInfoForTakingDecision==1){
+        if(!onlineOrOffline){
+            errorMessage = "Please Check Your Internet Connection";
+        }
+        else if(passedInfoForTakingDecision==1){
             errorMessage = "Wrong URL provided!";
         }
         else if(passedInfoForTakingDecision==2){
@@ -209,9 +220,6 @@ document.getElementById('searchButton').addEventListener('click',() =>{
     clearTheSearchBox();
 })
 
-const whatIsInTheSearchField = () => {
-    return document.getElementById('inputFromUser').value;
-}
 
 // if enter keyCode 13 is pressed and the focus is at the time of staying in the input frame this will also trigger the searching for the meal information
 // else if the input text matches with any food name that the api returns then we will show them also and if no then that display div will be set to no innerHtml
@@ -226,7 +234,7 @@ document.getElementById('inputFromUser').addEventListener( 'keyup' , event =>{
         if(nameOfTheEnteredMeal=='' || nameOfTheEnteredMeal==' ' || nameOfTheEnteredMeal==undefined || nameOfTheEnteredMeal==null){
             clearTheSearchBox();
             const divOfTheSearchings = document.getElementById('elementFromTheSearchResultDiv');
-            divOfTheSearchings.innerHTML='';
+            makeInnerHtmlNone(divOfTheSearchings);
         }
         else{
             const sendingAPIUrl = `https://www.themealdb.com/api/json/v1/1/search.php?s=${nameOfTheEnteredMeal}`;
