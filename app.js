@@ -108,7 +108,7 @@ const requestForInternalDetails = urlOfTheSpecificFood => {
     fetchingFromTheMealDBApi(urlOfTheSpecificFood , 2,);
 }
 
-// if any of the searched food items are clicked then if the click is on the food part then that will trigger the indepth information about the food 
+// if any of the searched food items that are suggested are clicked then if the click is on the food part then that will trigger the indepth information about the food 
 document.getElementById('elementFromTheSearchResultDiv').addEventListener('click',event =>{
     const idOfTheClickedFood = event.target.id;
     console.log(idOfTheClickedFood);
@@ -130,6 +130,7 @@ document.getElementById('foodGallery').addEventListener('click',event =>{
 })
 
 // By typing in the search-box the typed text will be shown as the search results just bellow the search box
+// this is also an added functionality for the food suggestion
 const displaySearchResults = (fletchedDataInJson) => {
     const searchResultDiv = document.getElementById('elementFromTheSearchResultDiv');
     makeInnerHtmlNone(searchResultDiv);
